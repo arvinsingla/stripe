@@ -19,13 +19,13 @@ function stripe_admin_keys() {
   $publishable = stripe_get_key("publishable");
   if ($secret && $publishable) {
     if (($library = libraries_load('stripe')) && !empty($library['loaded'])) {
-      $info = Stripe_Account::retrieve();
+      $info = \Stripe\Account::retrieve();
       $account_information = "<label>Email:</label> ".$info->email;
       $account_information .= "<br /><label>Statement Descriptor:</label> ".$info->statement_descriptor;
       $account_information .= "<br /><label>Details Submitted:</label> ".$info->details_submitted;
       $account_information .= "<br /><label>Charge Enabled:</label> ".$info->charge_enabled;
       $account_information .= "<br /><label>Transfer Enabled:</label> ".$info->transfer_enabled;
-      $account_information .= "<br /><label>currencies_supported:</label> ".implode(", ", $info->currencies_supported);
+      $account_information .= "<br /><label>Currencies Supported:</label> ".implode(", ", $info->currencies_supported);
     } else {
       $account_information = t("Failed to load Stripe library.");
     }

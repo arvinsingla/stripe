@@ -86,6 +86,7 @@ function stripe_element_info() {
       '#address' => FALSE,
       '#cvc' => TRUE,
       '#publishable_key' => NULL,
+      '#title' => NULL,
     ),
   );
 }
@@ -110,6 +111,7 @@ function stripe_element_info() {
 function stripe_element_process($element, $form_state, $complete_form) {
   $live = variable_get('stripe_key_status', 'test') === 'live';
   $element['#type'] = 'fieldset';
+  $element['#title'] = $element['#title'];
   $element += element_info('fieldset');
   $element['#tree'] = TRUE;
   $element['stripe_token'] = array(
@@ -367,7 +369,7 @@ function stripe_libraries_info() {
       'pattern' => '/([0-9a-zA-Z\.-]+)/',
       'lines' => 1,
     ),
-    'files' => array('php' => array('lib/Stripe.php')),
+    'files' => array('php' => array('init.php')),
     'callbacks' => array('post-load' => array('stripe_libraries_postload_callback')),
   );
   return $libraries;
@@ -391,7 +393,7 @@ function stripe_libraries_postload_callback($library, $version = NULL, $variant 
     $secret_key_name = 'stripe_' . $status . '_secret';
     $secret_key = variable_get($secret_key_name, '');
 
-    empty($secret_key) ? NULL : Stripe::setApiKey($secret_key);
+    empty($secret_key) ? NULL : \Stripe\Stripe::setApiKey($secret_key);
   }
 }
 

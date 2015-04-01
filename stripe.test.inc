@@ -64,7 +64,7 @@ function stripe_admin_test_ajax($form, &$form_state) {
 function stripe_admin_test_submit($form, &$form_state) {
   if (($library = libraries_load('stripe')) && !empty($library['loaded'])) {
     try {
-      $charge = Stripe_Charge::create(array(
+      $charge = \Stripe\Charge::create(array(
           "amount" => $form_state['values']['amount'], // amount in cents, again
           "currency" => "usd",
           "card" => $form_state['values']['stripe']['stripe_token'],
